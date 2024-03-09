@@ -2,23 +2,103 @@ import {bytesToBase64} from "byte-base64";
 // @ts-ignore
 import piexif from "piexifjs";
 
+const VALID_HEIC_CC_CODES = [
+  "heic",
+  "heix",
+  "hevc",
+  "hevx",
+  "heis",
+  "heim",
+  "hevm",
+  "hevs"
+]
+
+// export async function convertHEICFileToJPEGBase64(image: File) {
+//   // step 1. validate that this is a heic
+//   if (image.type !== "image/heic") {
+//     throw new Error("Only HEIC images are supported!");
+//   }
+//
+//   // step 2. convert into base64
+//   const arrayBuffer = await image.arrayBuffer();
+//   const uint8array = new Uint8Array(arrayBuffer);
+//
+//   // check for heic magic number
+//   // heic magic number is 8 bytes long
+//   // https://github.com/strukturag/libheif/issues/83#issuecomment-421427091
+//   // starting at byte index 4
+//   // load into consts
+//   const ftyp = uint8array.slice(4, 8);
+//   const ccCode = uint8array.slice(8, 12);
+//
+//   // convert to text
+//   const decoder = new TextDecoder();
+//   const ftypString = decoder.decode(ftyp);
+//   const ccCodeString = decoder.decode(ccCode);
+//
+//   if (ftypString !== "ftyp") {
+//     throw new Error("Invalid HEIC image!");
+//   }
+//   if (!VALID_HEIC_CC_CODES.includes(ccCodeString)) {
+//     throw new Error("Unsupported HEIC image!");
+//   }
+//
+//   // step 3. convert into jpeg
+//   let outputBuffer: ArrayBuffer | null = null;
+//   try {
+//     outputBuffer = await convert({
+//       format: "JPEG",
+//       buffer: arrayBuffer,
+//       quality: 1
+//     });
+//   } catch {
+//     throw new Error("Could not convert HEIC image to JPEG!");
+//   }
+//   if (!outputBuffer) {
+//     throw new Error("Could not convert HEIC image to JPEG!");
+//   }
+//   const outputUint8Array = new Uint8Array(outputBuffer);
+//
+//   return "data:image/jpeg;base64," + bytesToBase64(outputUint8Array);
+// }
+
 export async function convertJPEGFileToBase64(image: File) {
   // step 1. validate that this is a jpeg
-  if (!(image.name.toUpperCase().endsWith(".JPEG") || image.name.toUpperCase().endsWith(".JPEG"))) {
-    throw Error("File must be a JPEG. Other formats are not supported.");
+  if (image.type !== "image/jpeg") {
+    throw new Error("Only JPEG images are supported!");
   }
 
   // step 2. convert into base64
   const arrayBuffer = await image.arrayBuffer();
   const uint8array = new Uint8Array(arrayBuffer);
+
+  // check for jpeg magic number
+  if (uint8array[0] !== 0xFF || uint8array[1] !== 0xD8) {
+    throw new Error("Invalid JPEG image!");
+  }
+
   return "data:image/jpeg;base64," + bytesToBase64(uint8array);
 }
 
-export type GPSData = {[p: string]: any};
+export async function convertImageFileToBase64(image: File) {
+  switch (image.type) {
+    case "image/jpeg":
+      return await convertJPEGFileToBase64(image);
+    case "image/heic":
+      // return await convertHEICFileToJPEGBase64(image);
+      throw new Error("HEIC images are not yet supported. Please configure your phone to take JPEGs.");
+    case "image/png":
+      throw new Error("PNG images do not contain metadata!");
+    default:
+      throw new Error("Unsupported image format!");
+  }
+}
+
+export type GPSData = { [p: string]: any };
 
 export function extractGPSData(imageBase64: string): GPSData {
   // step 3. digest with piexifjs
-  let piexifDump: {[p: string]: any};
+  let piexifDump: { [p: string]: any };
   try {
     piexifDump = piexif.load(imageBase64);
   } catch {
@@ -75,7 +155,8 @@ export type GPSPointData = {
   lat: number,
   lng: number,
   altitude: number | null,
-  bearing: number | null
+  bearing: number | null,
+  imageBase64?: string
 };
 
 export function getGPSPointData(gpsData: GPSData): GPSPointData {
@@ -91,7 +172,7 @@ export function getGPSPointData(gpsData: GPSData): GPSPointData {
 
   const altitude = (gpsData.hasOwnProperty("GPSAltitude") && (gpsData["GPSAltitude"][0] / gpsData["GPSAltitude"][1])) || null;
 
-  const bearing = (gpsData.hasOwnProperty("GPSImgDirectionRef") &&  gpsData.hasOwnProperty("GPSImgDirection") && getTrueNorthBearingForExifBearing(
+  const bearing = (gpsData.hasOwnProperty("GPSImgDirectionRef") && gpsData.hasOwnProperty("GPSImgDirection") && getTrueNorthBearingForExifBearing(
     gpsData["GPSImgDirectionRef"],
     gpsData["GPSImgDirection"]
   )) || null;

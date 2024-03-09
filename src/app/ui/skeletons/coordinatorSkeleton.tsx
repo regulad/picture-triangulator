@@ -1,16 +1,20 @@
 import {FileInput, Label} from "flowbite-react";
-import {convertJPEGFileToBase64, extractGPSData, GPSData} from "@/app/lib/metadata";
-import {clsx} from "clsx";
+import {ImageSkeleton} from "@/app/ui/skeletons/imageSkeleton";
+import CoordinateHUD from "@/app/ui/components/coordinateHUD";
 
-export default function CoordinatorSkeleton({ heading, inputId }: { heading: string, inputId: string }) {
+export default function CoordinatorSkeleton({heading, inputId}: { heading: string, inputId: string }) {
   return (
     <div className={"my-2"}>
       <div>
         <Label htmlFor={inputId} value={heading}/>
       </div>
-      <FileInput
-        helperText={"JPEG Only"}
-      />
+      <FileInput/>
+      <div className={"my-1"}/>
+      {/* Spacing */}
+      <ImageSkeleton/>
+      <div className={"my-1"}/>
+      {/* Spacing */}
+      <CoordinateHUD/>
     </div>
   );
 }

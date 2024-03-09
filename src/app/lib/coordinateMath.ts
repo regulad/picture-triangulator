@@ -17,7 +17,7 @@ export function latLonToGPSPointData(latLon: LatLon, altitude: number | null = n
   };
 }
 
-export function disanceBetweenPointsMeters(point1: GPSPointData, point2: GPSPointData): number {
+export function distanceBetweenPointsMeters(point1: GPSPointData, point2: GPSPointData): number {
   const p1 = gpsPointDataToLatLon(point1);
   const p2 = gpsPointDataToLatLon(point2);
   return p1.distanceTo(p2, R);
