@@ -1,8 +1,11 @@
 // https://www.flowbite-react.com/docs/forms/file-input
 
-export default function DropzoneSkelton({id = "file-dropzone", helperText = "SVG, PNG, JPG or GIF (MAX. 800x400px)"}: {
-  id?: string,
-  helperText?: string
+export default function DropzoneSkelton({
+  id = "file-dropzone",
+  helperText = "SVG, PNG, JPG or GIF (MAX. 800x400px)",
+}: {
+  id?: string;
+  helperText?: string;
 }) {
   return (
     <div className="flex w-full items-center justify-center">
@@ -27,11 +30,14 @@ export default function DropzoneSkelton({id = "file-dropzone", helperText = "SVG
             />
           </svg>
           <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-            <span className="font-semibold">Click to upload</span> or drag and drop
+            <span className="font-semibold">Click to upload</span> or drag and
+            drop
           </p>
-          <p className="text-xs text-gray-500 dark:text-gray-400">{helperText}</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400">
+            {helperText}
+          </p>
         </div>
-        <input id={id} onChange={undefined} className="hidden"/>
+        <input id={id} onChange={undefined} className="hidden" />
       </label>
     </div>
   );

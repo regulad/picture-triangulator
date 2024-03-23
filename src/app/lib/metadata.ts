@@ -1,4 +1,4 @@
-import {bytesToBase64} from "byte-base64";
+import { bytesToBase64 } from "byte-base64";
 // @ts-ignore
 import piexif from "piexifjs";
 
@@ -10,8 +10,8 @@ const VALID_HEIC_CC_CODES = [
   "heis",
   "heim",
   "hevm",
-  "hevs"
-]
+  "hevs",
+];
 
 // export async function convertHEICFileToJPEGBase64(image: File) {
 //   // step 1. validate that this is a heic
@@ -73,7 +73,7 @@ export async function convertJPEGFileToBase64(image: File) {
   const uint8array = new Uint8Array(arrayBuffer);
 
   // check for jpeg magic number
-  if (uint8array[0] !== 0xFF || uint8array[1] !== 0xD8) {
+  if (uint8array[0] !== 0xff || uint8array[1] !== 0xd8) {
     throw new Error("Invalid JPEG image!");
   }
 
@@ -86,7 +86,9 @@ export async function convertImageFileToBase64(image: File) {
       return await convertJPEGFileToBase64(image);
     case "image/heic":
       // return await convertHEICFileToJPEGBase64(image);
-      throw new Error("HEIC images are not yet supported. Please configure your phone to take JPEGs.");
+      throw new Error(
+        "HEIC images are not yet supported. Please configure your phone to take JPEGs.",
+      );
     case "image/png":
       throw new Error("PNG images do not contain metadata!");
     default:
@@ -107,18 +109,23 @@ export function extractGPSData(imageBase64: string): GPSData {
   const gpsData = piexifDump.GPS;
 
   // step 4. extractGPSdata
-  return Object.fromEntries(Object.entries<number>(piexif.GPSIFD).flatMap(([tag, nonce]) => {
-    if (gpsData.hasOwnProperty(nonce)) {
-      return [[tag, gpsData[String(nonce)]]];
-    } else {
-      return [];
-    }
-  })) satisfies GPSData;
+  return Object.fromEntries(
+    Object.entries<number>(piexif.GPSIFD).flatMap(([tag, nonce]) => {
+      if (gpsData.hasOwnProperty(nonce)) {
+        return [[tag, gpsData[String(nonce)]]];
+      } else {
+        return [];
+      }
+    }),
+  ) satisfies GPSData;
 }
 
 export type CoordinateReference = "N" | "S" | "E" | "W";
 
-export function getDecimalCoordinateForExifCoordinate(direction: CoordinateReference, exifCoordinate: Array<Array<number>>): number {
+export function getDecimalCoordinateForExifCoordinate(
+  direction: CoordinateReference,
+  exifCoordinate: Array<Array<number>>,
+): number {
   const degrees = exifCoordinate[0][0] / exifCoordinate[0][1];
   const minutes = exifCoordinate[1][0] / exifCoordinate[1][1];
   const seconds = exifCoordinate[2][0] / exifCoordinate[2][1];
@@ -141,7 +148,10 @@ export function getDecimalCoordinateForExifCoordinate(direction: CoordinateRefer
 // M: Magnetic North
 export type BearingReference = "T" | "M";
 
-export function getTrueNorthBearingForExifBearing(reference: BearingReference, exifBearing: Array<number>): number {
+export function getTrueNorthBearingForExifBearing(
+  reference: BearingReference,
+  exifBearing: Array<number>,
+): number {
   const bearing = exifBearing[0] / exifBearing[1];
 
   if (reference === "T") {
@@ -152,35 +162,42 @@ export function getTrueNorthBearingForExifBearing(reference: BearingReference, e
 }
 
 export type GPSPointData = {
-  lat: number,
-  lng: number,
-  altitude: number | null,
-  bearing: number | null,
-  imageBase64?: string
+  lat: number;
+  lng: number;
+  altitude: number | null;
+  bearing: number | null;
+  imageBase64?: string;
 };
 
 export function getGPSPointData(gpsData: GPSData): GPSPointData {
   const lat = getDecimalCoordinateForExifCoordinate(
     gpsData["GPSLatitudeRef"],
-    gpsData["GPSLatitude"]
+    gpsData["GPSLatitude"],
   );
 
   const long = getDecimalCoordinateForExifCoordinate(
     gpsData["GPSLongitudeRef"],
-    gpsData["GPSLongitude"]
+    gpsData["GPSLongitude"],
   );
 
-  const altitude = (gpsData.hasOwnProperty("GPSAltitude") && (gpsData["GPSAltitude"][0] / gpsData["GPSAltitude"][1])) || null;
+  const altitude =
+    (gpsData.hasOwnProperty("GPSAltitude") &&
+      gpsData["GPSAltitude"][0] / gpsData["GPSAltitude"][1]) ||
+    null;
 
-  const bearing = (gpsData.hasOwnProperty("GPSImgDirectionRef") && gpsData.hasOwnProperty("GPSImgDirection") && getTrueNorthBearingForExifBearing(
-    gpsData["GPSImgDirectionRef"],
-    gpsData["GPSImgDirection"]
-  )) || null;
+  const bearing =
+    (gpsData.hasOwnProperty("GPSImgDirectionRef") &&
+      gpsData.hasOwnProperty("GPSImgDirection") &&
+      getTrueNorthBearingForExifBearing(
+        gpsData["GPSImgDirectionRef"],
+        gpsData["GPSImgDirection"],
+      )) ||
+    null;
 
   return {
     lat,
     lng: long,
     altitude,
-    bearing
+    bearing,
   };
 }

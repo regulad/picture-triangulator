@@ -1,32 +1,47 @@
-import Topbar from "@/app/ui/components/topbar";
-import {Suspense} from "react";
+import { Suspense } from "react";
 import ClientSideApp from "@/app/ui/components/clientSideApp";
 import ClientSideAppSkeleton from "@/app/ui/skeletons/clientSideAppSkeleton";
-import {Kbd} from "flowbite-react";
+import { Kbd } from "flowbite-react";
+import Topbar from "@/app/ui/components/topbar";
 
 export default function Home() {
   return (
     <main>
-      <Topbar/>
+      <Topbar />
       <section className={"m-2 container mx-auto"}>
         <p>
-          Upload any two pictures and triangulate the location of the subject using the embedded GPS data.
+          Upload any two pictures and triangulate the location of the subject
+          using the embedded GPS data.
         </p>
         <p className={"mt-2"}>
-          Useful for figuring out what people are taking pictures of in the middle of nowhere, or whatever you want to
-          use it for.
+          Useful for figuring out what people are taking pictures of in the
+          middle of nowhere, or whatever you want to use it for.
         </p>
         <p className={"mt-2"}>
-          Your pictures will not be uploaded to any server. All processing is done client-side.
+          Your pictures will not be uploaded to any server. All processing is
+          done client-side.
         </p>
         <p className={"mt-2"}>
-          Some browsers may remove the GPS data from the pictures when you add them. If you&apos;re using a phone, you may need to request a desktop site.
+          Some browsers may remove the GPS data from the pictures when you add
+          them. If you&apos;re using a phone, you may need to request a desktop
+          site.
         </p>
-        <Suspense fallback={<ClientSideAppSkeleton/>}>
-          <ClientSideApp/>
+        <Suspense fallback={<ClientSideAppSkeleton />}>
+          <ClientSideApp />
         </Suspense>
         <p className={"mt-3"}>
-          Made with <a className={"classic-link"} href={"https://github.com/regulad/picture-triangulator"}>Open-Source</a> <Kbd>{"<"}3</Kbd> by Parker Wahle (<a className={"classic-link"} href={"https://regulad.xyz"}>regulad</a>)
+          Made with{" "}
+          <a
+            className={"classic-link"}
+            href={"https://github.com/regulad/picture-triangulator"}
+          >
+            Open-Source
+          </a>{" "}
+          <Kbd>{"<"}3</Kbd> by Parker Wahle (
+          <a className={"classic-link"} href={"https://regulad.xyz"}>
+            regulad
+          </a>
+          )
         </p>
       </section>
     </main>

@@ -1,17 +1,17 @@
-'use client';
+"use client";
 // https://www.flowbite-react.com/docs/forms/file-input
 
-import {FileInput, Label} from 'flowbite-react';
-import {ChangeEventHandler} from "react";
+import { FileInput, Label } from "flowbite-react";
+import { ChangeEventHandler } from "react";
 
 export default function Dropzone({
-                                   id = "file-dropzone",
-                                   onChange = undefined,
-                                   helperText = "SVG, PNG, JPG or GIF (MAX. 800x400px)"
-                                 }: {
-  id?: string,
-  onChange?: ChangeEventHandler<HTMLInputElement>,
-  helperText?: string
+  id = "file-dropzone",
+  onChange = undefined,
+  helperText = "SVG, PNG, JPG or GIF (MAX. 800x400px)",
+}: {
+  id?: string;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
+  helperText?: string;
 }) {
   return (
     <div className="flex w-full items-center justify-center">
@@ -36,11 +36,14 @@ export default function Dropzone({
             />
           </svg>
           <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-            <span className="font-semibold">Click to upload</span> or drag and drop
+            <span className="font-semibold">Click to upload</span> or drag and
+            drop
           </p>
-          <p className="text-xs text-gray-500 dark:text-gray-400">{helperText}</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400">
+            {helperText}
+          </p>
         </div>
-        <FileInput id={id} onChange={onChange} className="hidden"/>
+        <FileInput id={id} onChange={onChange} className="hidden" />
       </Label>
     </div>
   );
