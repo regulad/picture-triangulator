@@ -28,7 +28,7 @@ export enum ViewOptions {
 export default function ClientSideApp() {
   const [gpsPoint1, setGpsPoint1] = useState<GPSPointData | null>(null);
   const [gpsPoint2, setGpsPoint2] = useState<GPSPointData | null>(null);
-  const [viewOption, setViewOption] = useState<ViewOptions>(ViewOptions.Globe);
+  const [viewOption, setViewOption] = useState<ViewOptions>(ViewOptions.Map);
   const triangulatedPoint = gpsPoint1 && gpsPoint2 && triangulatePointFromPointData(gpsPoint1, gpsPoint2);
 
   const arcsData = [];
