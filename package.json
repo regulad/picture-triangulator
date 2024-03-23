@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.1.1",
+    "@vercel/analytics": "^1.2.2",
+    "@vercel/speed-insights": "^1.0.10",
     "byte-base64": "^1.1.0",
     "clsx": "^2.1.0",
     "flowbite": "^2.3.0",

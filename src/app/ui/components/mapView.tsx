@@ -38,7 +38,7 @@ export default function MapView({ className = undefined, point1, point2, triangu
         center={center}
         zoom={triangulatedPoint ? 15 : 1}
         scrollWheelZoom={true}
-        style={{height: "100%", width: "100%"}}
+        className={"h-full w-full z-0"}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

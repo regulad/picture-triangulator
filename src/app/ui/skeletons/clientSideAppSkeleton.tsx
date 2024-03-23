@@ -7,13 +7,13 @@ import {ViewOptions} from "@/app/ui/components/clientSideApp";
 export default function ClientSideAppSkeleton() {
   return (
     <>
-      <div className={"md:flex"}>
-        <div className={"max-w-1/2"}>
+      <div className={"md:flex flex-auto"}>
+        <div className={"md:basis-1/2"}>
           <CoordinatorSkeleton heading={"Picture 2"} inputId={"picture2"}/>
         </div>
         <div className={"w-2"}/>
         {/* spacer */}
-        <div className={"max-w-1/2"}>
+        <div className={"md:basis-1/2"}>
           <CoordinatorSkeleton heading={"Picture 2"} inputId={"picture2"}/>
         </div>
       </div>

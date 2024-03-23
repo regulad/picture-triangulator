@@ -80,15 +80,15 @@ export default function ClientSideApp() {
 
   return (
     <>
-      <div className={"md:flex"}>
-        <div className={"max-w-1/2"}>
+      <div className={"md:flex flex-auto"}>
+        <div className={"md:basis-1/2"}>
           <Suspense fallback={<CoordinatorSkeleton heading={"Picture 2"} inputId={"picture2"}/>}>
             <Coordinator heading={"Picture 1"} inputId={"picture1"} onChange={setGpsPoint1}/>
           </Suspense>
         </div>
         <div className={"w-2"}/>
         {/* spacer */}
-        <div className={"max-w-1/2"}>
+        <div className={"md:basis-1/2"}>
           <Suspense fallback={<CoordinatorSkeleton heading={"Picture 2"} inputId={"picture2"}/>}>
             <Coordinator heading={"Picture 2"} inputId={"picture2"} onChange={setGpsPoint2}/>
           </Suspense>
