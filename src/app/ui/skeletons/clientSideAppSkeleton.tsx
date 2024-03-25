@@ -2,7 +2,6 @@ import CoordinatorSkeleton from "@/app/ui/skeletons/coordinatorSkeleton";
 import { Dropdown, DropdownItem } from "flowbite-react";
 import CoordinateHUD from "@/app/ui/components/coordinateHUD";
 import VideoSkeleton from "@/app/ui/skeletons/videoSkeleton";
-import { ViewOptions } from "@/app/ui/components/clientSideApp";
 
 export default function ClientSideAppSkeleton() {
   return (
@@ -24,9 +23,11 @@ export default function ClientSideAppSkeleton() {
             <DropdownItem>Map</DropdownItem>
           </Dropdown>
         </div>
-        <div className={"w-2"} /> {/* spacer */}
+        <div className={"w-2"} />
+        {/* spacer */}
         <span className={"my-auto"}>Triangulated Point:</span>
-        <div className={"w-2"} /> {/* spacer */}
+        <div className={"w-2"} />
+        {/* spacer */}
         <div>
           <CoordinateHUD />
         </div>

@@ -6,11 +6,12 @@ export function pointAsString(data: GPSPointData) {
 
 export default function CoordinateHUD({
   data,
-}: Readonly<{ data?: GPSPointData | null }>) {
+  text = "No data provided.",
+}: Readonly<{ data?: GPSPointData | null; text?: string }>) {
   // gray
   return (
     <div className={"bg-gray-200 p-2 w-full rounded"}>
-      {data ? pointAsString(data) : "No data provided."}
+      {data ? pointAsString(data) : text}
     </div>
   );
 }

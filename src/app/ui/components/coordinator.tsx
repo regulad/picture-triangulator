@@ -120,7 +120,14 @@ export default function Coordinator({
       </p>
       <div className={"my-1"} />
       {/* spacing */}
-      <CoordinateHUD data={gpsPointData} />
+      <CoordinateHUD
+        data={gpsPointData}
+        text={
+          !!imageUrl
+            ? "Image does not contain coordinate data."
+            : "No picture uploaded."
+        }
+      />
     </div>
   );
 }

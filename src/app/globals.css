@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-.classic-link {
-  @apply underline text-blue-600 hover:text-blue-800 visited:text-purple-600;
+@layer components {
+  .classic-link {
+    @apply underline text-blue-600 hover:text-blue-800 visited:text-purple-600;
+  }
 }

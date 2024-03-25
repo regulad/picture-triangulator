@@ -29,29 +29,39 @@ export default function ClientSideApp() {
   const [gpsPoint1, setGpsPoint1] = useState<GPSPointData | null>(null);
   const [gpsPoint2, setGpsPoint2] = useState<GPSPointData | null>(null);
   const [viewOption, setViewOption] = useState<ViewOptions>(ViewOptions.Map);
-  const triangulatedPoint =
-    gpsPoint1 &&
-    gpsPoint2 &&
-    triangulatePointFromPointData(gpsPoint1, gpsPoint2);
+
+  let triangulatedPoint: GPSPointData | null = null;
+  let pointPossible: boolean = true;
+  if (gpsPoint1 !== null && gpsPoint2 !== null) {
+    try {
+      triangulatedPoint = triangulatePointFromPointData(gpsPoint1, gpsPoint2);
+    } catch (e) {
+      pointPossible = false;
+    }
+  }
 
   const arcsData = [];
   if (triangulatedPoint) {
-    arcsData.push({
-      name: "Point 1 to Triangulated Point",
-      startLat: gpsPoint1.lat,
-      startLng: gpsPoint1.lng,
-      endLat: triangulatedPoint.lat,
-      endLng: triangulatedPoint.lng,
-      color: "#FF0000",
-    });
-    arcsData.push({
-      name: "Point 2 to Triangulated Point",
-      startLat: gpsPoint1.lat,
-      startLng: gpsPoint1.lng,
-      endLat: triangulatedPoint.lat,
-      endLng: triangulatedPoint.lng,
-      color: "#00FF00",
-    });
+    if (gpsPoint1 !== null) {
+      arcsData.push({
+        name: "Point 1 to Triangulated Point",
+        startLat: gpsPoint1.lat,
+        startLng: gpsPoint1.lng,
+        endLat: triangulatedPoint.lat,
+        endLng: triangulatedPoint.lng,
+        color: "#FF0000",
+      });
+    }
+    if (gpsPoint2 !== null) {
+      arcsData.push({
+        name: "Point 2 to Triangulated Point",
+        startLat: gpsPoint2.lat,
+        startLng: gpsPoint2.lng,
+        endLat: triangulatedPoint.lat,
+        endLng: triangulatedPoint.lng,
+        color: "#00FF00",
+      });
+    }
   }
 
   const pointsData = [];
@@ -128,7 +138,14 @@ export default function ClientSideApp() {
         <div className={"w-2"} />
         {/* spacer */}
         <div>
-          <CoordinateHUD data={triangulatedPoint} />
+          <CoordinateHUD
+            data={triangulatedPoint}
+            text={
+              pointPossible
+                ? "No data provided."
+                : "No intersection exists between these points."
+            }
+          />
         </div>
       </div>
       <div>

@@ -2,17 +2,17 @@
 
 import "leaflet/dist/leaflet.css";
 import markerPath from "leaflet/dist/images/marker-icon-2x.png";
+import markerShadowPath from "leaflet/dist/images/marker-shadow.png";
 import {
   MapContainer,
   Marker,
   Polyline,
   Popup,
   TileLayer,
-  useMap,
 } from "react-leaflet";
 import { GPSPointData } from "@/app/lib/metadata";
-import React, { useEffect } from "react";
-import { LatLngExpression, icon } from "leaflet";
+import React from "react";
+import { icon, LatLngExpression } from "leaflet";
 import { pointAsString } from "@/app/ui/components/coordinateHUD";
 
 function latLongExpresssionOfPoint(point: GPSPointData): LatLngExpression {
@@ -21,6 +21,7 @@ function latLongExpresssionOfPoint(point: GPSPointData): LatLngExpression {
 
 const markerIcon = icon({
   iconUrl: markerPath.src,
+  shadowUrl: markerShadowPath.src,
   iconSize: [25, 41],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
